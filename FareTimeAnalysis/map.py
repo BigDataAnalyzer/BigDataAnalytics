@@ -59,7 +59,7 @@ def get_distance_range(trip_distance):
 for line in sys.stdin:
     data = line.strip().split(",")
 
-    if len(data)< 18 or data[0]=="vendor_id":
+    if len(data)< 18 or data[0]=="vendor_id" or data[0]=="VendorID":
         continue
 
     pickup_date_time = data[1]
