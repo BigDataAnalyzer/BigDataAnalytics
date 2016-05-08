@@ -1,6 +1,17 @@
 #!/usr/bin/env python
 import sys
-from common_functions import *;
+import datetime
+
+def convert_str_to_date(date_str):
+    date_obj = None
+    try:
+        date_obj = datetime.datetime.strptime(date_str,'%Y-%m-%d %H:%M:%S')
+    except Exception:
+        pass
+    return date_obj
+
+def is_weekend(date_obj):
+    return date_obj.weekday==5 or date_obj.weekday==6
 
 
 def get_distance_range(trip_distance):
@@ -22,20 +33,12 @@ def get_distance_range(trip_distance):
         return  "21-24"
     elif trip_distance>= 24.00:
         return  "24-infinite"
-    
+
 for line in sys.stdin:
     data = line.strip().split(",")
-    if len(data) < 18 or data[0] == "vendor_id":
+    if len(data) < 18 or data[0] == "vendor_id" or data[0]=="VendorID":
        continue
-    trip_distance= data[4]
+    trip_distance= float(data[4])
     payment_type = data[11]
-    pickup_longitude = data[5]
-    pickup_latitude = data[6]
-    dropoff_longitude = data[9]
-    dropoff_latitude = data[10]
     dist_range = get_distance_range(trip_distance)
     print dist_range + "\t" + payment_type
-
-
-
-
