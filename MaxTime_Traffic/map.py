@@ -44,7 +44,7 @@ def get_time_range(date_obj):
 
 for line in sys.stdin:
     data = line.strip().split(",")
-    if len(data)<18 or data[0]=="vendor_id":
+    if len(data)<18 or data[0]=="vendor_id" or data[0]=="VendorID":
         continue
     pickup_date_time = data[1]
     date_obj = convert_str_date(pickup_date_time)
