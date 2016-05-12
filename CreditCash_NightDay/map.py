@@ -12,9 +12,9 @@ def convert_str_to_date(date_str):
 
 
 def get_time_range(date_obj):
-    if date_obj.hour>=5 or date_obj.hour<=21:
+    if date_obj.hour>=5 and date_obj.hour<=21:
         return "day"
-    if date_obj.hour > 21 or date_obj.hour <5:
+    else:
         return "night"
 
 for line in sys.stdin:

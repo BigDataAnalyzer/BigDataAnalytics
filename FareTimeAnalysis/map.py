@@ -11,7 +11,7 @@ def convert_str_to_date(date_str):
     return date_obj
 
 def is_weekend(date_obj):
-    return date_obj.weekday==5 or date_obj.weekday==6
+    return date_obj.weekday()==5 or date_obj.weekday()==6
 
 def get_time_range(date_obj):
     if date_obj.hour>=7 and date_obj.hour<=10:
@@ -72,7 +72,5 @@ for line in sys.stdin:
     dist_range = get_distance_range(trip_distance)
     result = "weekend" if is_weekend(date_obj) else "weekday"
     time_range = get_time_range(date_obj)
-
     trip_seconds = (date_obj_drop_off - date_obj).seconds
-
     print str(result) + "," + str(time_range) + "," + str(dist_range) + "\t" + str(fare_amount) + ","+str(trip_seconds)
