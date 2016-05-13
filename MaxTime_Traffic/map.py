@@ -24,14 +24,16 @@ def get_time_range(date_obj):
     elif date_obj.hour>=11.01 and date_obj.hour<=12:
         return "11-12"
     elif date_obj.hour>=12.01 and date_obj.hour<=13:
-        return "13-14"
+        return "12-13"
     elif date_obj.hour>=13.01 and date_obj.hour<=14:
-        return "14-15"
+        return "13-14"
     elif date_obj.hour>=14.01 and date_obj.hour<=15:
-        return "15-16"
+        return "14-15"
     elif date_obj.hour>=15.01 and date_obj.hour<=16:
-        return "16-17"
+        return "15-16"
     elif date_obj.hour>=16.01 and date_obj.hour<=17:
+        return "16-17"
+    elif date_obj.hour>=17.01 and date_obj.hour<=18:
         return "17-18"
     elif date_obj.hour>=18.01 and date_obj.hour<=19:
         return "18-19"
