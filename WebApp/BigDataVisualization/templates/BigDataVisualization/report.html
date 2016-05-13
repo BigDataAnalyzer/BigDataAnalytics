@@ -1,0 +1,160 @@
+{% extends "BigDataVisualization/header.html" %}
+{% block content %}
+    <div class="container">
+        <h1 style="text-align:center">Report</h1>
+        <div id="canvas_holder">
+            <canvas id="report_chart" style="height:40px"></canvas>
+        </div>
+        {% if  d_time %}
+            <div class="row">
+                <div class="col col-md-3">
+                    <h5>Day Type</h5>
+                    <select id="day_type" class="form-control">
+                        <option value="weekday">Weekday</option>
+                        <option value="weekend">Weekend</option>
+                    </select>
+                </div>
+                <div class="col col-md-3">
+                    <h5>Group By</h5>
+                    <select id="group_by" class="form-control">
+                        <option value="dist">Distance Range</option>
+                        <option value="time">Time Slot</option>
+                    </select>
+                </div>
+                <div class="col col-md-3">
+                    <h5>X-Axis</h5>
+                    <select id="x_axis" class="form-control">
+                        {% for i in dist_keys %}
+                            <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col col-md-3">
+                    <h5>Y-Axis</h5>
+                    <select id="y_axis" class="form-control">
+                        <option value="fare">Fare</option>
+                        <option value="time">Time</option>
+                    </select>
+                </div>
+            </div>
+            <script>
+                function generate_chart() {
+                    var ctx = document.getElementById("report_chart");
+                    var xLabel = null;
+                    var yLabel = null;
+                    if ($("#y_axis").val() == "fare") {
+                        yLabel = "Fare";
+                    } else {
+                        yLabel = "Trip Time";
+                    }
+                    window.v = null;
+                    if ($("#day_type").val() == "weekday") {
+                        if ($("#group_by").val() == "dist") {
+                            v ={{ d_dist|safe }};
+                            xLabel = "Time Slots";
+                        } else {
+                            v ={{ d_time|safe }};
+                            xLabel = "Distance Range";
+                        }
+                    } else {
+                        if ($("#group_by").val() == "dist") {
+                            v ={{ n_dist|safe }};
+                            xLabel = "Time Slots";
+                        } else {
+                            v ={{ n_time|safe }};
+                            xLabel = "Distance Range";
+                        }
+                    }
+                    var idx_y = null;
+                    if ($("#y_axis").val() == "fare") {
+                        idx_y = 1;
+                    } else {
+                        idx_y = 2;
+                    }
+                    var data = {
+
+                        labels: v[$("#x_axis").val()][0],
+                        datasets: [
+                            {
+                                label: "Analysis",
+                                backgroundColor: "rgba(22,70,225,0.4)",
+                                borderColor: "rgba(22,70,225,1)",
+                                borderWidth: 1,
+                                data: v[$("#x_axis").val()][idx_y],
+                            }
+                        ]
+                    };
+                    var myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: data,
+                        options: options = {
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: yLabel
+                                    }
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: xLabel
+                                    }
+                                }]
+                            },
+
+                        }
+                    });
+                }
+
+            </script>
+        {% else %}
+            <script>
+                var ctx = document.getElementById("report_chart");
+                var myChart = {{ chart|safe }};
+            </script>
+        {% endif %}
+
+        <script>
+            $(document).ready(function () {
+                generate_chart();
+                $("#x_axis")
+                        .change(function () {
+                            $("#report_chart").remove();
+                            $("#canvas_holder").append("<canvas id='report_chart'></canvas>");
+                            generate_chart();
+                        });
+                $("#y_axis")
+                        .change(function () {
+                            $("#report_chart").remove();
+                            $("#canvas_holder").append("<canvas id='report_chart'></canvas>");
+                            generate_chart();
+                        });
+                $("#group_by")
+                        .change(function () {
+                            $("#report_chart").remove();
+                            $("#canvas_holder").append("<canvas id='report_chart'></canvas>");
+                            $("#x_axis").find("option").remove();
+                            if ($("#group_by").val() == "dist") {
+                                {% for i in  dist_keys%}
+                                    $("#x_axis").append("<option value= '{{ i }}' > {{ i }} </option>");
+                                {% endfor %}
+                            } else {
+                                {% for i in  time_keys%}
+                                    $("#x_axis").append("<option value='{{ i }}' > {{ i }} </option>");
+                                {% endfor %}
+                            }
+                            generate_chart();
+                        });
+                $("#day_type")
+                        .change(function () {
+                            $("#report_chart").remove();
+                            $("#canvas_holder").append("<canvas id='report_chart'></canvas>");
+                            generate_chart();
+                        });
+            });
+        </script>
+        <hr/>
+        <br/><br/><br/><br/>
+    </div><!-- /.container -->
+{% endblock %}
