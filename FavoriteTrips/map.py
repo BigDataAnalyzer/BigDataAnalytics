@@ -11,6 +11,8 @@ for line in sys.stdin:
     areas = area_info.split(",")
     if len(data)<18 or data[0]=="vendor_id" or data[0]=="VendorID":
         continue
+    if areas[1]=="NA" or areas[3]=="NA":
+        continue
     if fav_trips.get(areas[1]+","+areas[3]):
         fav_trips[areas[1]+","+areas[3]]+=1
     else:

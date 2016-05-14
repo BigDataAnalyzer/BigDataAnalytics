@@ -11,6 +11,8 @@ for line in sys.stdin:
     areas = area_info.split(",")
     if len(data)<18 or data[0]=="vendor_id" or data[0]=="VendorID":
         continue
+    if areas[0]=="NA":
+        continue
     if boroughs.get(areas[0]):
         boroughs[areas[0]]+=1
     else:

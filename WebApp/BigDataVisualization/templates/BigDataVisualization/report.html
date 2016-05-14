@@ -198,6 +198,27 @@
                 });
 
             </script>
+        {% elif html%}
+            <div id="table_holder">
+                {{ chart_2013|safe }}
+            </div>
+            <script>
+                $(document).ready(function () {
+                    $("#select_year").change(function () {
+                        generate_chart();
+                    });
+                });
+                function generate_chart() {
+                    $("#output_table").remove();
+                    if ($("#select_year").val() == 2013) {
+                        $("#table_holder").append("{{ chart_2013|safe }}");
+                    } else if ($("#select_year").val() == 2014) {
+                        $("#table_holder").append("{{ chart_2014|safe }}");
+                    } else {
+                        $("#table_holder").append("{{ chart_2015|safe }}");
+                    }
+                }
+            </script>
         {% else %}
             <script>
                 var ctx = document.getElementById("report_chart");

@@ -75,6 +75,39 @@ def report(request, report_id):
                 chart_2015 = get_ratecode_chart(x, [y1, y2, y3, y4, y5])
             i += 1
         result = {"chart_2013": chart_2013, "chart_2014": chart_2014, "chart_2015": chart_2015, "check_chart": "null"}
+    elif report_id == 3:
+        all_data = get_output("Output/NightLife/")
+        i = 0
+        for data in all_data:
+            x = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+            chart_tmp = "<table class=\'table table-striped\' id=\'output_table\'>" \
+                        + "<thead><tr><th>Month/Rank</th> <td>1</td><td>2</td><td>3</td><td>4</td>" \
+                        + "<td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td></tr></thead>"
+            pk = None
+            c = 1
+            chart_tmp += "<tr><td>" + str(x[c - 1]) + "</td>"
+            for d in data.split("\n"):
+                if "\t" not in d:
+                    continue
+                key, record = d.split("\t")
+                if not pk or pk == key.split(",")[0]:
+                    chart_tmp += "<td>" + key.split(",")[1] + "," + key.split(",")[2] + "</td>"
+                else:
+                    c += 1
+                    chart_tmp += "</tr> <tr> <td>" + str(x[c - 1]) + "</td><td>" + key.split(",")[1] + "," + \
+                                 key.split(",")[2] + "</td>"
+                pk = key.split(",")[0]
+            chart_tmp += "</tr>"
+            chart_tmp += "</table>"
+            if i == 0:
+                chart_2013 = chart_tmp
+            elif i == 1:
+                chart_2014 = chart_tmp
+            else:
+                chart_2015 = chart_tmp
+            i += 1
+        result = {"chart_2013": chart_2013, "chart_2014": chart_2014, "chart_2015": chart_2015, "check_chart": "null",
+                  "html": "html"}
     elif report_id == 6:
         all_data = get_output("Output/CreditCashDist/")
         i = 0
@@ -309,12 +342,58 @@ def report(request, report_id):
                     continue
                 k = j.split("\t")
                 y.append(float(k[1]))
-            if i==0:
+            if i == 0:
                 chart_2013 = get_month_trip(x, y)
-            elif i==1:
+            elif i == 1:
                 chart_2014 = get_month_trip(x, y)
             else:
                 chart_2015 = get_month_trip(x, y)
+            i += 1
+        result = {"chart_2013": chart_2013, "chart_2014": chart_2014, "chart_2015": chart_2015, "check_chart": "null"}
+    elif report_id == 9:
+        all_data = get_output("Output/BoroughTrips/")
+        i = 0
+        chart_2013 = ""
+        chart_2014 = ""
+        chart_2015 = ""
+        for data in all_data:
+            x =[]
+            y = []
+            for d in data.split("\n"):
+                if len(d.split("\t"))>=2:
+                    x.append(d.split("\t")[0])
+                    y.append(d.split("\t")[1])
+            if i == 0:
+                chart_2013 = get_borough_trip(x, y)
+            elif i == 1:
+                chart_2014 = get_borough_trip(x, y)
+            else:
+                chart_2015 = get_borough_trip(x, y)
             i+=1
         result = {"chart_2013": chart_2013, "chart_2014": chart_2014, "chart_2015": chart_2015, "check_chart": "null"}
+    elif report_id == 10:
+        all_data = get_output("Output/FavTrips/")
+        i = 0
+        chart_2013 = ""
+        chart_2014 = ""
+        chart_2015 = ""
+        for data in all_data:
+            chart_tmp = "<table class=\'table table-striped\' id=\'output_table\'>" \
+                        + "<thead><tr><th>Source</th> <th>Destination</th><th>Num Trips</th></tr></thead>"
+            for d in data.split("\n"):
+                if len(d.split("\t"))<2:
+                    continue
+                key,value = d.split("\t")
+                chart_tmp+="<tr><td>"+key.split(",")[0]+"</td>"+"<td>"+key.split(",")[1]+"</td>"\
+                           +"<td>"+value+"</td>"+"</tr>"
+            chart_tmp += "</table>"
+            if i == 0:
+                chart_2013 = chart_tmp
+            elif i == 1:
+                chart_2014 = chart_tmp
+            else:
+                chart_2015 = chart_tmp
+            chart_tmp=""
+            i+=1
+        result = {"chart_2013": chart_2013, "chart_2014": chart_2014, "chart_2015": chart_2015, "check_chart": "null",'html':'html'}
     return render(request, 'BigDataVisualization/report.html', result)

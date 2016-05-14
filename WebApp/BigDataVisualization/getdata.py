@@ -190,3 +190,19 @@ def get_month_trip(x,y):
     })
     chart = "new Chart(ctx,"+json_content+");"
     return chart
+
+def get_borough_trip(x, y):
+    data = json.dumps( {'type': 'pie','data':{\
+    'datasets': [{\
+            'data': y,\
+            'backgroundColor': [\
+                "#FF6384",\
+                "#4BC0C0",\
+                "#FFCE56",\
+                "#E7E9ED",\
+                "#36A2EB"\
+            ],\
+        }],\
+        'labels': x\
+    }})
+    return  "new Chart(ctx,"+data+");"
