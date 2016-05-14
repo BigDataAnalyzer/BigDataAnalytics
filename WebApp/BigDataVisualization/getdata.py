@@ -1,6 +1,7 @@
 import os
 import json
 
+
 def get_output(folderpath):
     file_list = os.listdir(folderpath)
     result = ""
@@ -13,6 +14,7 @@ def get_output(folderpath):
             result+=line+"\n"
         f.close()
     return result
+
 
 def get_traffic_chart(x,y):
     mean = reduce(lambda a, b: a + b, y) / len(y)
@@ -53,8 +55,8 @@ def get_traffic_chart(x,y):
     chart = "new Chart(ctx,"+json_content+");"
     return chart
 
+
 def get_credit_cash(x,y):
-    print y
     json_content = json.dumps({'type': 'radar','data': {\
             'labels': x,\
                 'datasets': [\
@@ -86,6 +88,26 @@ def get_credit_cash(x,y):
                 ]\
         }\
     })
-    print json_content
+    chart = "new Chart(ctx,"+json_content+");"
+    return chart
+
+
+def get_credit_cash_time(x,y):
+    json_content = json.dumps({'type': 'radar','data': {\
+            'labels': x,\
+                'datasets': [\
+                    {\
+                        'label':'Day',\
+                        'backgroundColor':'rgba(22,70,225,0.4)',\
+                        'data':y[0]\
+                    },\
+                    {\
+                        'label':'Night',\
+                        'backgroundColor':'rgba(22,225,76,0.4)',\
+                        'data':y[1]\
+                    },\
+                ]\
+        }\
+    })
     chart = "new Chart(ctx,"+json_content+");"
     return chart

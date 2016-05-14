@@ -117,41 +117,44 @@
 
         <script>
             $(document).ready(function () {
-                generate_chart();
-                $("#x_axis")
-                        .change(function () {
-                            $("#report_chart").remove();
-                            $("#canvas_holder").append("<canvas id='report_chart'></canvas>");
-                            generate_chart();
-                        });
-                $("#y_axis")
-                        .change(function () {
-                            $("#report_chart").remove();
-                            $("#canvas_holder").append("<canvas id='report_chart'></canvas>");
-                            generate_chart();
-                        });
-                $("#group_by")
-                        .change(function () {
-                            $("#report_chart").remove();
-                            $("#canvas_holder").append("<canvas id='report_chart'></canvas>");
-                            $("#x_axis").find("option").remove();
-                            if ($("#group_by").val() == "dist") {
-                                {% for i in  dist_keys%}
-                                    $("#x_axis").append("<option value= '{{ i }}' > {{ i }} </option>");
-                                {% endfor %}
-                            } else {
-                                {% for i in  time_keys%}
-                                    $("#x_axis").append("<option value='{{ i }}' > {{ i }} </option>");
-                                {% endfor %}
-                            }
-                            generate_chart();
-                        });
-                $("#day_type")
-                        .change(function () {
-                            $("#report_chart").remove();
-                            $("#canvas_holder").append("<canvas id='report_chart'></canvas>");
-                            generate_chart();
-                        });
+                var x = '{{ check_chart}}';
+                if (x != "null") {
+                    generate_chart();
+                    $("#x_axis")
+                            .change(function () {
+                                $("#report_chart").remove();
+                                $("#canvas_holder").append("<canvas id='report_chart'></canvas>");
+                                generate_chart();
+                            });
+                    $("#y_axis")
+                            .change(function () {
+                                $("#report_chart").remove();
+                                $("#canvas_holder").append("<canvas id='report_chart'></canvas>");
+                                generate_chart();
+                            });
+                    $("#group_by")
+                            .change(function () {
+                                $("#report_chart").remove();
+                                $("#canvas_holder").append("<canvas id='report_chart'></canvas>");
+                                $("#x_axis").find("option").remove();
+                                if ($("#group_by").val() == "dist") {
+                                    {% for i in  dist_keys%}
+                                        $("#x_axis").append("<option value= '{{ i }}' > {{ i }} </option>");
+                                    {% endfor %}
+                                } else {
+                                    {% for i in  time_keys%}
+                                        $("#x_axis").append("<option value='{{ i }}' > {{ i }} </option>");
+                                    {% endfor %}
+                                }
+                                generate_chart();
+                            });
+                    $("#day_type")
+                            .change(function () {
+                                $("#report_chart").remove();
+                                $("#canvas_holder").append("<canvas id='report_chart'></canvas>");
+                                generate_chart();
+                            });
+                }
             });
         </script>
         <hr/>

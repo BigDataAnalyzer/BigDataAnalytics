@@ -34,7 +34,12 @@ def report(request,report_id):
             x.append(vals[0])
             y.append(float(vals[1]))
         chart = get_traffic_chart(x,y)
-        result = {"chart":chart}
+        result = {"chart":chart,"check_chart":"null"}
+    elif report_id==2:
+        data= get_output("Output/MaxTraffic/")
+        x = []
+        y = []
+
     elif report_id==6:
         data= get_output("Output/CreditCashDist/")
         x = []
@@ -62,7 +67,7 @@ def report(request,report_id):
         y.append(no_charge)
         y.append(unknown)
         chart = get_credit_cash(x,y)
-        result = {"chart":chart}
+        result = {"chart":chart,"check_chart":"null"}
     elif report_id==4:
         data= get_output("Output/FareTime/")
         d_time = {}
@@ -108,5 +113,32 @@ def report(request,report_id):
                     d_dist[dist_range][0].append(time_slot)
                     d_dist[dist_range][1].append(fare)
                     d_dist[dist_range][2].append(trip_time)
-        result = {"chart":chart,"d_dist":json.dumps(d_dist),"d_time":json.dumps(d_time),"n_dist":json.dumps(n_dist),"n_time":json.dumps(n_time),"time_keys":time_keys,"dist_keys":dist_keys}
+        result = {"chart":chart,"d_dist":json.dumps(d_dist),"d_time":json.dumps(d_time),"n_dist":json.dumps(n_dist),"n_time":json.dumps(n_time),"time_keys":time_keys,"dist_keys":dist_keys,"check_chart":"FareTime"}
+    elif report_id==5:
+        data= get_output("Output/CreditCashTime/")
+        x = []
+        y = []
+        night = []
+        day = []
+        d = data.split("\n")
+        vals = d[0].split("\t")
+        values = vals[1].split(",")
+        day.append(float(values[0].split(':')[1].strip()))
+        day.append(float(values[1].split(':')[1].strip()))
+        day.append(float(values[2].split(':')[1].strip()))
+        day.append(float(values[3].split(':')[1].strip()))
+        day.append(float(values[4].split(':')[1].strip()))
+        vals = d[1].split("\t")
+        values = vals[1].split(",")
+        night.append(float(values[0].split(':')[1].strip()))
+        night.append(float(values[1].split(':')[1].strip()))
+        night.append(float(values[2].split(':')[1].strip()))
+        night.append(float(values[3].split(':')[1].strip()))
+        night.append(float(values[4].split(':')[1].strip()))
+        x = ['Card','Cash','Dispute','No Charge','Unknown']
+        y.append(day)
+        y.append(night)
+        chart = get_credit_cash_time(x,y)
+        print chart
+        result = {"chart":chart,"check_chart":"null"}
     return render(request, 'BigDataVisualization/report.html',result)
