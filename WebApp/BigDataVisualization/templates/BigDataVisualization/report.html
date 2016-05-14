@@ -212,7 +212,7 @@
                     $("#canvas_holder").append("<canvas id='report_chart'></canvas>");
                     var ctx = document.getElementById("report_chart");
                     var myChart = null;
-                    if ($("#select_year").val() == 2015) {
+                    if ($("#select_year").val() == 2013) {
                         myChart = {{ chart_2013|safe }};
                     } else if ($("#select_year").val() == 2014) {
                         myChart = {{ chart_2014|safe }};

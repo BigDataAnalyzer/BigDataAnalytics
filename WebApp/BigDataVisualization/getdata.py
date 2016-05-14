@@ -160,3 +160,33 @@ def get_credit_cash_time(x,y):
     })
     chart = "new Chart(ctx,"+json_content+");"
     return chart
+
+def get_month_trip(x,y):
+    json_content = json.dumps({'type': 'bar','data': {\
+            'labels': x,\
+            'datasets': [{\
+                'label': '',\
+                'data': map(round,y),\
+                'backgroundColor':"rgba(150,0,76,0.6)",\
+                'borderWidth':1\
+            }]\
+         },\
+        'options' : {\
+          'scales': {\
+             'yAxes': [{\
+                  'scaleLabel': {\
+                      'display': 'true',\
+                      'labelString': 'Number Of Trips'\
+                  }\
+              }],\
+             'xAxes': [{\
+                  'scaleLabel': {\
+                      'display': 'true',\
+                      'labelString': 'Months'\
+                  }\
+              }]\
+          }\
+        }\
+    })
+    chart = "new Chart(ctx,"+json_content+");"
+    return chart

@@ -77,7 +77,7 @@ def report(request, report_id):
         result = {"chart_2013": chart_2013, "chart_2014": chart_2014, "chart_2015": chart_2015, "check_chart": "null"}
     elif report_id == 6:
         all_data = get_output("Output/CreditCashDist/")
-        i=0
+        i = 0
         for data in all_data:
             x = []
             y = []
@@ -109,7 +109,7 @@ def report(request, report_id):
                 chart_2014 = get_credit_cash(x, y)
             else:
                 chart_2015 = get_credit_cash(x, y)
-            i+=1
+            i += 1
         result = {"chart_2013": chart_2013, "chart_2014": chart_2014, "chart_2015": chart_2015, "check_chart": "null"}
     elif report_id == 4:
         all_data = get_output("Output/FareTime/")
@@ -131,9 +131,9 @@ def report(request, report_id):
         n_dist_2015 = {}
         time_keys_2015 = []
         dist_keys_2015 = []
-        i=0
+        i = 0
         for data in all_data:
-            if i==0:
+            if i == 0:
                 for record in data.split("\n"):
                     if len(record.split("\t")) < 2:
                         continue
@@ -171,7 +171,7 @@ def report(request, report_id):
                             d_dist_2013[dist_range][0].append(time_slot)
                             d_dist_2013[dist_range][1].append(fare)
                             d_dist_2013[dist_range][2].append(trip_time)
-            elif i==1:
+            elif i == 1:
                 for record in data.split("\n"):
                     if len(record.split("\t")) < 2:
                         continue
@@ -247,19 +247,22 @@ def report(request, report_id):
                             d_dist_2015[dist_range][0].append(time_slot)
                             d_dist_2015[dist_range][1].append(fare)
                             d_dist_2015[dist_range][2].append(trip_time)
-            i+=1
+            i += 1
         result = {"chart": chart, "d_dist_2013": json.dumps(d_dist_2013), "d_time_2013": json.dumps(d_time_2013),
-                  "n_dist_2013": json.dumps(n_dist_2013), "n_time_2013": json.dumps(n_time_2013), "time_keys_2013": time_keys_2013,
+                  "n_dist_2013": json.dumps(n_dist_2013), "n_time_2013": json.dumps(n_time_2013),
+                  "time_keys_2013": time_keys_2013,
                   "dist_keys_2013": dist_keys_2013,
                   "d_dist_2014": json.dumps(d_dist_2014), "d_time_2014": json.dumps(d_time_2014),
-                  "n_dist_2014": json.dumps(n_dist_2014), "n_time_2014": json.dumps(n_time_2014), "time_keys_2014": time_keys_2014,
+                  "n_dist_2014": json.dumps(n_dist_2014), "n_time_2014": json.dumps(n_time_2014),
+                  "time_keys_2014": time_keys_2014,
                   "dist_keys_2014": dist_keys_2014,
                   "d_dist_2015": json.dumps(d_dist_2015), "d_time_2015": json.dumps(d_time_2015),
-                  "n_dist_2015": json.dumps(n_dist_2015), "n_time_2015": json.dumps(n_time_2015), "time_keys_2015": time_keys_2015,
-                  "dist_keys_2015": dist_keys_2015,"check_chart": "FareTime"}
+                  "n_dist_2015": json.dumps(n_dist_2015), "n_time_2015": json.dumps(n_time_2015),
+                  "time_keys_2015": time_keys_2015,
+                  "dist_keys_2015": dist_keys_2015, "check_chart": "FareTime"}
     elif report_id == 5:
         all_data = get_output("Output/CreditCashTime/")
-        i=0
+        i = 0
         for data in all_data:
             x = []
             y = []
@@ -289,6 +292,29 @@ def report(request, report_id):
                 chart_2014 = get_credit_cash_time(x, y)
             else:
                 chart_2015 = get_credit_cash_time(x, y)
+            i += 1
+        result = {"chart_2013": chart_2013, "chart_2014": chart_2014, "chart_2015": chart_2015, "check_chart": "null"}
+    elif report_id == 7:
+        all_data = get_output("Output/MonthTrips/")
+        i = 0
+        chart_2013 = ""
+        chart_2014 = ""
+        chart_2015 = ""
+        x = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        for data in all_data:
+            y = []
+            d = data.split("\n")
+            for j in d:
+                if "\t" not in j:
+                    continue
+                k = j.split("\t")
+                y.append(float(k[1]))
+            if i==0:
+                chart_2013 = get_month_trip(x, y)
+            elif i==1:
+                chart_2014 = get_month_trip(x, y)
+            else:
+                chart_2015 = get_month_trip(x, y)
             i+=1
         result = {"chart_2013": chart_2013, "chart_2014": chart_2014, "chart_2015": chart_2015, "check_chart": "null"}
     return render(request, 'BigDataVisualization/report.html', result)
