@@ -62,4 +62,3 @@ for line in sys.stdin:
         print line+"\t"+str(neighborhoods[pick_up_index][0])+","+str(neighborhoods[pick_up_index][1]+","+str(neighborhoods[drop_off_index][0]+","+str(neighborhoods[drop_off_index][1])))
     except Exception:
         pass
-    print line+"\t"+str(neighborhoods[pick_up_index][0])+","+str(neighborhoods[pick_up_index][1]+","+str(neighborhoods[drop_off_index][0]+","+str(neighborhoods[drop_off_index][1])))
