@@ -1,0 +1,74 @@
+{% extends "BigDataVisualization/header.html" %}
+{% block head %}
+    {% load staticfiles %}
+    <script src='{% static 'js/Chart.min.js' %}'></script>
+    <style>
+        a:visited, a:active, a:hover, a:link {
+            color: #333;
+        }
+    </style>
+    <script type="text/javascript">
+        function extract_range(){
+            var dist_range = $("#dist_range").val();
+            var values = dist_range.split("-");
+            return [parseInt(values[0]),parseInt(values[1])];
+        }
+        $(document).ready(function () {
+            $("#query").click(function () {
+                var result = extract_range();
+                var d1 = result[0];
+                var d2 = result[1];
+                var fare =  0.6145 * parseInt($("#year").val()) + 1.7178 * d1 + 0.7253 * d2 + -1229.7124;
+                var time = 154.605  *parseInt($("#year").val()) + 94.8256 * d1+ 5.4762 * d2 + -310620.0991;
+                $("#result_time").text("$ "+Math.round(fare*100)/100);
+                $("#result_fare").text(Math.round(time*100)/100+" second(s)");
+            });
+        });
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1> Fare Time Calculator </h1>
+        <div class="row">
+            <div class="col col-md-5">
+                <label> Enter Year </label>
+                <select class="form-control" id="year">
+                    {% for i in years %}
+                        <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col col-md-5">
+                <label> Distance Range </label>
+                <select class="form-control" id="dist_range">
+                    {% for i in dist_range %}
+                        <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col col-md-3">
+                <button class="btn btn-primary" id="query">Calculate !</button>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col col-md-3">
+                <label> Time: </label>
+                <label id="result_fare"></label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-md-3">
+                <label> Fare: </label>
+                <label id="result_time"></label>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+
