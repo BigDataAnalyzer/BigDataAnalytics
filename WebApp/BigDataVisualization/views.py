@@ -357,10 +357,10 @@ def report(request, report_id):
         chart_2014 = ""
         chart_2015 = ""
         for data in all_data:
-            x =[]
+            x = []
             y = []
             for d in data.split("\n"):
-                if len(d.split("\t"))>=2:
+                if len(d.split("\t")) >= 2:
                     x.append(d.split("\t")[0])
                     y.append(d.split("\t")[1])
             if i == 0:
@@ -369,7 +369,7 @@ def report(request, report_id):
                 chart_2014 = get_borough_trip(x, y)
             else:
                 chart_2015 = get_borough_trip(x, y)
-            i+=1
+            i += 1
         result = {"chart_2013": chart_2013, "chart_2014": chart_2014, "chart_2015": chart_2015, "check_chart": "null"}
     elif report_id == 10:
         all_data = get_output("Output/FavTrips/")
@@ -381,11 +381,11 @@ def report(request, report_id):
             chart_tmp = "<table class=\'table table-striped\' id=\'output_table\'>" \
                         + "<thead><tr><th>Source</th> <th>Destination</th><th>Num Trips</th></tr></thead>"
             for d in data.split("\n"):
-                if len(d.split("\t"))<2:
+                if len(d.split("\t")) < 2:
                     continue
-                key,value = d.split("\t")
-                chart_tmp+="<tr><td>"+key.split(",")[0]+"</td>"+"<td>"+key.split(",")[1]+"</td>"\
-                           +"<td>"+value+"</td>"+"</tr>"
+                key, value = d.split("\t")
+                chart_tmp += "<tr><td>" + key.split(",")[0] + "</td>" + "<td>" + key.split(",")[1] + "</td>" \
+                             + "<td>" + value + "</td>" + "</tr>"
             chart_tmp += "</table>"
             if i == 0:
                 chart_2013 = chart_tmp
@@ -393,7 +393,67 @@ def report(request, report_id):
                 chart_2014 = chart_tmp
             else:
                 chart_2015 = chart_tmp
-            chart_tmp=""
-            i+=1
-        result = {"chart_2013": chart_2013, "chart_2014": chart_2014, "chart_2015": chart_2015, "check_chart": "null",'html':'html'}
+            chart_tmp = ""
+            i += 1
+        result = {"chart_2013": chart_2013, "chart_2014": chart_2014, "chart_2015": chart_2015, "check_chart": "null",
+                  'html': 'html'}
+    elif report_id == 8:
+        all_data = get_output("Output/DayTrips/")
+        i = 0
+        chart_2013 = ""
+        chart_2014 = ""
+        chart_2015 = ""
+        dates_2013 = ['2013-01-01', '2013-02-14', '2013-12-24', '2013-12-25', '2013-12-31', '2013-07-04', '2013-11-28',
+                      '2013-11-29', '2013-10-31']
+        dates_2014 = ['2014-01-01', '2014-02-14', '2014-12-24', '2014-12-25', '2014-12-31', '2014-07-04', '2014-11-27',
+                      '2014-11-28', '2014-10-31']
+        dates_2015 = ['2015-01-01', '2015-02-14', '2015-12-24', '2015-12-25', '2015-12-31', '2015-11-26', '2015-11-27',
+                      '2015-10-31', '2015-07-04']
+        d_2013 = {}
+        d_2014 = {}
+        d_2015 = {}
+        avg_2013 = 0
+        avg_2014 = 0
+        avg_2015 = 0
+        for data in all_data:
+            first = True
+            x = []
+            y = []
+            for d in data.split("\n"):
+                if first:
+                    first = False
+                    x.append(d.split("\t")[0])
+                    y.append(float(d.split("\t")[1]))
+                if "\t" not in d:
+                    continue
+                if i == 0:
+                    avg_2013 += float(d.split("\t")[1])
+                    if d.split("\t")[0] in dates_2013:
+                        d_2013[d.split("\t")[0]] = float(d.split("\t")[1])
+                elif i == 1:
+                    avg_2014 += float(d.split("\t")[1])
+                    if d.split("\t")[0] in dates_2014:
+                        d_2014[d.split("\t")[0]] = float(d.split("\t")[1])
+                else:
+                    avg_2015 += float(d.split("\t")[1])
+                    if d.split("\t")[0] in dates_2015:
+                        d_2015[d.split("\t")[0]] = float(d.split("\t")[1])
+            i += 1
+        chart_2013 = "<table class='table table-striped' id='output_table'><thead><th>Date</th><th>Day</th><th>Num Trips</th></thead>"
+        for key in d_2013.keys():
+            chart_2013 += "<tr><td>"+str(key)+"</td><td>"+map_date(key)+"</td><td>"+str(d_2013[key])+"</td></tr>"
+        chart_2013 += "<tr><td colspan=2>Average Trips Per day</td><td>"+str(avg_2013/365)+"</td></tr>"
+        chart_2013 += "</table>"
+        chart_2014 = "<table class='table table-striped' id='output_table'><thead><th>Date</th><th>Day</th><th>Num Trips</th></thead>"
+        for key in d_2014.keys():
+            chart_2014 += "<tr><td>"+str(key)+"</td><td>"+map_date(key)+"</td><td>"+str(d_2014[key])+"</td></tr>"
+        chart_2014 += "<tr><td colspan=2>Average Trips Per day</td><td>"+str(avg_2014/365)+"</td></tr>"
+        chart_2014 += "</table>"
+        chart_2015 = "<table class='table table-striped' id='output_table'><thead><th>Date</th><th>Day</th><th>Num Trips</th></thead>"
+        for key in d_2015.keys():
+            chart_2015 += "<tr><td>"+str(key)+"</td><td>"+map_date(key)+"</td><td>"+str(d_2015[key])+"</td></tr>"
+        chart_2015 += "<tr><td colspan=2>Average Trips Per day</td><td>"+str(avg_2015/365)+"</td></tr>"
+        chart_2015 += "</table>"
+        result = {"chart_2013": chart_2013, "chart_2014": chart_2014, "chart_2015": chart_2015, "check_chart": "null",
+                  'html': 'html'}
     return render(request, 'BigDataVisualization/report.html', result)

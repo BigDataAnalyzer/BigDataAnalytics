@@ -206,3 +206,20 @@ def get_borough_trip(x, y):
         'labels': x\
     }})
     return  "new Chart(ctx,"+data+");"
+
+def map_date(dt):
+    if "01-01" in dt or "12-31" in dt:
+        return "New Year"
+    elif "02-14" in dt:
+        return "Valentines Day"
+    elif "12-24" in dt:
+        return "Christmas Eve"
+    elif "12-25" in dt:
+        return "Christmas"
+    elif "07-04" in dt:
+        return "Independence day"
+    elif "2015-11-26" or "2014-11-27" or "2013-11-28":
+        return "Thankgiving"
+    elif "2015-11-27" or "2014-11-28" or "2013-11-29":
+        return "Black Friday"
+    return "Highest Trips"
