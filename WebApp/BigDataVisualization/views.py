@@ -457,3 +457,11 @@ def report(request, report_id):
         result = {"chart_2013": chart_2013, "chart_2014": chart_2014, "chart_2015": chart_2015, "check_chart": "null",
                   'html': 'html'}
     return render(request, 'BigDataVisualization/report.html', result)
+
+
+def faretime(request):
+    a = []
+    for i in range(2010,2031):
+        a.append(i)
+    d = ["0-3","3-6","6-9","9-12","12-15","15-18","18-21","21-24","24-50"]
+    return render(request, 'BigDataVisualization/predict.html',{"years":a,"dist_range":d})
