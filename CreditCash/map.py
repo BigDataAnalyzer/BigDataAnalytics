@@ -40,5 +40,9 @@ for line in sys.stdin:
        continue
     trip_distance= float(data[4])
     payment_type = data[11]
-    dist_range = get_distance_range(trip_distance)
-    print dist_range + "\t" + payment_type
+    try:
+        dist_range = get_distance_range(trip_distance)
+        if dist_range and payment_type:
+            print dist_range + "\t" + payment_type
+    except Exception:
+        pass
