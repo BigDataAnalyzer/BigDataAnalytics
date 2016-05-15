@@ -1,11 +1,47 @@
 {% extends "BigDataVisualization/header.html" %}
+{%  block head %}
+     <style>
+        a:visited,a:active,a:hover,a:link{
+            color: #333;
+        }
+    </style>
+{% endblock %}
 {% block content %}
     <div class="container">
 
-      <div class="starter-template">
-        <h1>BigData Analytics Project</h1>
-        <p class="lead">This project analyzes the NYC Taxi data.</p>
-      </div>
+        <div class="starter-template">
+            <h1>BigData Analytics Project</h1>
+            <p class="lead">This project analyzes the NYC Taxi data.</p><br/>
+            <label> Group - BigDataAnalyzers</label><br/>
+            <label> Github - <a href="https://github.com/BigDataAnalyzer/BigDataAnalytics">https://github.com/BigDataAnalyzer/BigDataAnalytics</a></label><br/>
+            <label> Group Members</label>
+            <br/>
+            <div class="col col-md-4">
+            </div>
+
+            <div class="col col-md-4">
+                <table class="table table-striped">
+                    <tr>
+                        <th style="text-align: center;">Name</th>
+                        <th style="text-align: center;">NetId</th>
+                    </tr>
+                    <tr>
+                        <td>Jay Dharmendra Solanki</td>
+                        <td>jds797</td>
+                    </tr>
+                    <tr>
+                        <td>Bhagya Laxshmi Gummalla</td>
+                        <td>blg332</td>
+                    </tr>
+                    <tr>
+                        <td>Ginni Malik</td>
+                        <td>gm1908</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col col-md-4">
+            </div>
+        </div>
 
     </div><!-- /.container -->
- {% endblock %}
+{% endblock %}
